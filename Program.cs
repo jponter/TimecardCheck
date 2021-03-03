@@ -36,12 +36,7 @@ namespace TimecardCheck
 
             while ((line = file.ReadLine()) != null)
             {
-                if (line.Contains("TimeCard AlertAPP  09:15"))
-                {
-                    //we are in a late session
-                    late = true;
-                }
-                else if (line.Contains("TimeCard AlertAPP  08:15"))
+                if (line.Contains("TimeCard AlertAPP  09:15") || line.Contains("TimeCard AlertAPP  08:15"))
                 {
                     //we are in a late session
                     late = true;
@@ -70,11 +65,7 @@ namespace TimecardCheck
                     //System.Console.WriteLine(splitline);
 
                 }
-                else if (line.Contains("TimeCard AlertAPP  18:15"))
-                {
-                    late = false;
-                }
-                else if (line.Contains("TimeCard AlertAPP  17:15"))
+                else if (line.Contains("TimeCard AlertAPP  18:15") || line.Contains("TimeCard AlertAPP  17:15"))
                 {
                     late = false;
                 }
