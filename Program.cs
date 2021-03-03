@@ -3,6 +3,11 @@ using System.Collections.Generic;
 
 namespace TimecardCheck
 {
+    //This is a dirty piece of code that quickly takes a dump of a slack channel whcih contains timecard bot data
+    //will scan through and pick out email entries matching Monday morning ie. LATE timecards and add them to a list
+    //increments the count of the times that email has been seen resulting in a count of all lateness over the given text dump period
+
+
     class Entry
     {
         public string Email = "";
