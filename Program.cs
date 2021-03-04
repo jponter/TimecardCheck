@@ -10,17 +10,22 @@ namespace TimecardCheck
 
     class Entry
     {
-        public string Email = "";
-        public int Count = 0;
+        //will hold each individual persons email and number of times their timecard was late
+        public string Email { get; set; }
+        public int Count { get; set; }
 
-        public Entry(string email)
-        {
-            Email = email;
-            Count = 1;
-        }
+       
     }
     class Program
     {
+        //filename of the full text dump from SlackBot channel
+        private static string FileNameToRead = @".\TimeCard.txt";
+        //set the two below strings to match the local time slackbot gets time card alerts on a Monday
+        private static string TimeCardBotText1 = "TimeCard AlertAPP  09:15";
+        private static string TimeCardBotText2 = "TimeCard AlertAPP  08:15";
+        //set the two below strings to match the local time slackbot gets time card alerts on a Friday
+        private static string TimeCardBotText3 = "TimeCard AlertAPP  18:15";
+        private static string TimeCardBotText4 = "TimeCard AlertAPP  17:15";
 
 
 
@@ -34,14 +39,14 @@ namespace TimecardCheck
 
 
 
-            Console.WriteLine("Reading File");
+            Console.WriteLine("Reading File...\n");
 
             //open and read the file
-            System.IO.StreamReader file = new System.IO.StreamReader(@".\TimeCard.txt");
+            System.IO.StreamReader file = new System.IO.StreamReader(FileNameToRead);
 
             while ((line = file.ReadLine()) != null)
             {
-                if (line.Contains("TimeCard AlertAPP  09:15") || line.Contains("TimeCard AlertAPP  08:15"))
+                if (line.Contains(TimeCardBotText1) || line.Contains(TimeCardBotText2))
                 {
                     //we are in a late session
                     late = true;
@@ -50,7 +55,7 @@ namespace TimecardCheck
                 {
                     bool found = false;
                     String splitline = line.Split(' ')[1];
-                    if (entries.Count == 0) { entries.Add(new Entry(splitline)); }
+                    if (entries.Count == 0) { entries.Add(new Entry() { Email = splitline, Count = 1 }); }
 
                     for (int i = 0; i < entries.Count; i++)
                     {
@@ -63,14 +68,14 @@ namespace TimecardCheck
 
                     if (found == false)
                     {
-                        entries.Add(new Entry(splitline));
+                        entries.Add(new Entry() { Email = splitline, Count = 1 });
                     }
 
 
                     //System.Console.WriteLine(splitline);
 
                 }
-                else if (line.Contains("TimeCard AlertAPP  18:15") || line.Contains("TimeCard AlertAPP  17:15"))
+                else if (line.Contains(TimeCardBotText3) || line.Contains(TimeCardBotText4))
                 {
                     late = false;
                 }
@@ -93,6 +98,8 @@ namespace TimecardCheck
             {
                 Console.WriteLine(entries[i].Email + " " + entries[i].Count);
             }
+
+            Console.WriteLine("\nPress any key to exit...\n");
             Console.ReadKey();
         }
     }
